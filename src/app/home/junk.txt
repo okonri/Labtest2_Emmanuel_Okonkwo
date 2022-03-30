@@ -1,0 +1,137 @@
+//home.page.ts from songApp, for reference
+
+
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder } from "@angular/forms";
+import { DbService } from './../services/db.service';
+import { ToastController } from '@ionic/angular';
+import { Router } from "@angular/router";
+import { FromEventTarget } from 'rxjs/internal/observable/fromEvent';
+import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
+import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
+import { Storage } from '@capacitor/storage';
+
+@Component({
+  selector: 'app-home',
+  templateUrl: 'home.page.html',
+  styleUrls: ['home.page.scss'],
+})
+export class HomePage implements OnInit {
+  latitude: number;
+  longitude: number;
+  mainForm: FormGroup;
+  Data: any[] = [{id:1, artist_name:"tst", song_name:"song"}];
+
+  setItem(position) {
+     console.log(`VALUE POS: ${position}`);
+      Storage.set(
+        {key: "test", value:`{ "timestamp":[${position.timestamp}, ${position.coords.latitude}, ${position.coords.longitude}]}`}
+      ); 
+      console.log(`AFTER STORAGE: ${position.timestamp}`);
+  }
+
+  getItem(){
+   console.log("GET ITEM");
+   Storage.get({key:"test"}).then(res =>{
+    const obj = JSON.parse(res.value);
+    console.log( `VALUE: ${res.value}, ${obj.timestamp[0]}`);
+   });
+ }
+
+  constructor(
+    private db: DbService,
+    public formBuilder: FormBuilder,
+    private toast: ToastController,
+    private router: Router,
+    private geolocation: Geolocation,
+    private nativeStorage: NativeStorage
+  ) {
+    console.log("Before locatioin get");
+    this.getLocation();
+  }
+  async getLocation() {
+    console.log('[DEBUG] About to getCurrentPosition() ');
+    const position = await this.geolocation.getCurrentPosition();
+    console.log('[DEBUG] After getCurrentPosition()');
+    
+    this.latitude = position.coords.latitude;
+    this.longitude = position.coords.longitude;
+    this.setItem(position);
+  }
+  ngOnInit(){
+    console.log("AFTER native");
+    this.db.dbState().subscribe(
+      async (res)=>{
+        if(res){
+          this.db.fetchSongs().subscribe(async item => {
+            this.Data = item;
+            let toast = await this.toast.create({
+              message:'db loaded',
+              duration: 2500
+            });
+            toast.present();
+          })
+        }else{
+          let toast = await this.toast.create({
+            message:'Res is empty',
+            duration: 2500
+          });
+          toast.present();
+        }
+      }
+    );
+    this.mainForm = this.formBuilder.group({
+      artist:[''],
+      song:['']
+    });
+  }
+
+  storeData(){
+    this.db.dbState().subscribe(async res=>{
+      let toast = await this.toast.create({
+        message:`DB state: ${res}`,
+        duration: 2500
+      });
+      toast.present();
+      if(res){}else{
+        this.db.init().then(res=>{
+
+
+        }).catch(async error=>{
+          let toast = await this.toast.create({
+            message:`error: ${error}`,
+            duration: 2500
+          });
+          toast.present();
+        })
+      }
+    });
+    this.db.addSong(
+      this.mainForm.value.artist,
+      this.mainForm.value.song
+    )
+    .then((res)=>{
+      this.mainForm.reset();
+      
+    }).catch(async error => {
+      let toast = await this.toast.create({
+        message: `error: ${error}`,
+        duration: 2500
+      });
+      toast.present();
+    });
+  }
+
+  deleteSong(id){
+    this.db.deleteSong(id).then(async(res)=>{
+      let toast = await this.toast.create({
+        message:'Song deleted',
+        duration: 2500
+      });
+      toast.present();
+    })
+  }
+
+  
+
+}
