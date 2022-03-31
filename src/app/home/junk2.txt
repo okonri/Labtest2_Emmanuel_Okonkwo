@@ -1,4 +1,26 @@
 
+ajv@^6.9.1 @angular/common@^9.1.0 @angular/core@^9.1.0 @angular/core@13.2.7 zone.js@~0.11.4 @angular/core@13.2.7
+
+ajv@^8.8.2 @angular/core@9.1.0 @angular/common@13.2.7 @angular/core@13.3.1 @angular/common@^9.1.0
+
+@angular/core @angular/platform-browser @angular/router @awesome-cordova-plugins/geolocation @agm/core @ionic-native/sqlite @angular/common @ionic-native/sqlite-porter
+
+
+npm install @ionic-native/sqlite
+npm install cordova-sqlite-storage
+npm i @ionic-native/core
+npm install @ionic-native/sqlite-porter
+
+npm install uk.co.workingedge.cordova.plugin.sqliteporter
+
+
+
+apiKey: 'AIzaSyA3fvwystbCp1bKGvA3VcfoIuiTxHe0TA8'
+
+map issues after installing agmcore:
+npm install @types/googlemaps@3.39.12 --save-dev
+
+
 COMP3097 – WINTER2022
 Max: 15 points
 Rules

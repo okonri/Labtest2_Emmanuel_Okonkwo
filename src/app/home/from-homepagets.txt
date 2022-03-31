@@ -1,0 +1,28 @@
+async postGPSPermission(canUseGPS: boolean) {
+    if (canUseGPS) { this.watchPosition(); }
+    else {
+      await Toast.show({
+        text: 'Please turn on GPS to get location'
+      })
+    }
+  }
+
+  async watchPosition() {
+    try {
+      this.watchId = Geolocation.watchPosition({}, (position, err) => {
+        this.ngZone.run(() => {
+          if (err) { console.log('err', err); return; }
+          this.lat = position.coords.latitude;
+          this.lng = position.coords.longitude
+          this.clearWatch();
+        })
+      })
+    }
+    catch (err) { console.log('err', err) }
+  }
+
+  clearWatch() {
+    if (this.watchId != null) {
+      Geolocation.clearWatch({ id: this.watchId });
+    }
+  }

@@ -1,13 +1,8 @@
 CREATE TABLE IF NOT EXISTS placestable(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    time TEXT PRIMARY KEY,
     lat TEXT, 
-    lng TEXT
+    lng TEXT,
 );
-INSERT or IGNORE INTO songtable( lat, lng) VALUES ( 'Justin Bieber', 'Yummy');
-INSERT or IGNORE INTO songtable( lat, lng) VALUES ( 'Jonas Brothers', 'What A Man Gotta Do');
-INSERT or IGNORE INTO songtable( lat, lng) VALUES ( 'Life Is Good', 'Future');
-INSERT or IGNORE INTO songtable( lat, lng) VALUES ( 'Lauv', 'Tattoos Together');
-INSERT or IGNORE INTO songtable( lat, lng) VALUES ( 'Heavy Steppers', 'Whateva');
-INSERT or IGNORE INTO songtable( lat, lng) VALUES ( 'DigDat 2020', 'Ei8ht Mile');
-INSERT or IGNORE INTO songtable( lat, lng) VALUES ( 'Blackbear', 'me & ur ghost');
-INSERT or IGNORE INTO songtable( lat, lng) VALUES ( 'Hailee Steinfeld', 'Wrong Direction');
+
+INSERT or IGNORE INTO placestable(time, lat, lng) VALUES ("1648763263832", "43.73155234003273", "-79.46301621297084");
+INSERT or IGNORE INTO placestable(time, lat, lng) VALUES ("1648763263832", "42.2603136", "-80.9768576");

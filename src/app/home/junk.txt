@@ -135,3 +135,45 @@ export class HomePage implements OnInit {
   
 
 }
+
+
+
+
+scrapped:
+
+
+storeData(){
+    this.db.dbState().subscribe(async res=>{
+      let toast = await this.toast.create({
+        message:`DB state: ${res}`,
+        duration: 2500
+      });
+      toast.present();
+      if(res){}else{
+        this.db.init().then(res=>{
+
+
+        }).catch(async error=>{
+          let toast = await this.toast.create({
+            message:`error: ${error}`,
+            duration: 2500
+          });
+          toast.present();
+        })
+      }
+    });
+    this.db.addPlace(
+      this.mainForm.value.lat,
+      this.mainForm.value.lng
+    )
+    .then((res)=>{
+      this.mainForm.reset();
+      
+    }).catch(async error => {
+      let toast = await this.toast.create({
+        message: `error: ${error}`,
+        duration: 2500
+      });
+      toast.present();
+    });
+  }

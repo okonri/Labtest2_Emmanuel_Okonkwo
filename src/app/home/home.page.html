@@ -16,35 +16,21 @@
   </ion-row>
 
 
-  <ion-list lines="full">
-    <form [formGroup]="mainForm" (ngSubmit)="storeData()">
-      <ion-item>
-        <ion-input formControlName="lat" type="hidden" required>{{lat}}</ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-input formControlName="lng" type="hidden" required>{{lng}}</ion-input>
-      </ion-item>
-      <ion-row>
-        <ion-col>
-          <ion-button type="submit" expand="full" color="primary" (click)="getMyLocation()">
-            Get My Location
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </form>
-  </ion-list>
+  <ion-button type="submit" expand="full" color="primary" (click)="getItem()">
+    Save My Location
+  </ion-button>
     <ion-list>
     <ion-list-header>
-      Saves Places
+      Saved Places
     </ion-list-header>
-    <ion-item lines="inset" *ngFor="let data of Data">
+    <ion-item lines="inset" *ngFor="let data of Data;">
       <ion-label>
-        <h5>{{data.lat}}</h5>
-        <p>{{data.lng}}</p>
+        <h5>Time: {{data.time}}</h5>
+        <h5>Longitude: {{data.lng}}</h5>
+        <h5>Latitude: {{data.lat}}</h5>
       </ion-label>
-      <div class="item-note" item-end>
-        <ion-icon name="create" style="zoom:2.0" [routerLink]="['/song/', data.id]"></ion-icon>        
-        <ion-icon name="trash" style="zoom:2.0" (click)="deletePlaces(data.id)"></ion-icon>
+      <div class="item-note" item-end>      
+        <ion-icon name="trash" style="zoom:2.0" (click)="deletePlace(data.time)"></ion-icon>
       </div>
     </ion-item>
   </ion-list>
