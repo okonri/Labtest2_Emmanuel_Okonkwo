@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Geo Location App
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -14,7 +14,41 @@
     <ion-col>Latitude: {{lat}}</ion-col>
     <ion-col>Longitude: {{lng}}</ion-col>
   </ion-row>
+
+
+  <ion-list lines="full">
+    <form [formGroup]="mainForm" (ngSubmit)="storeData()">
+      <ion-item>
+        <ion-input formControlName="lat" type="hidden" required>{{lat}}</ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="lng" type="hidden" required>{{lng}}</ion-input>
+      </ion-item>
+      <ion-row>
+        <ion-col>
+          <ion-button type="submit" expand="full" color="primary" (click)="getMyLocation()">
+            Get My Location
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-list>
+    <ion-list>
+    <ion-list-header>
+      Saves Places
+    </ion-list-header>
+    <ion-item lines="inset" *ngFor="let data of Data">
+      <ion-label>
+        <h5>{{data.lat}}</h5>
+        <p>{{data.lng}}</p>
+      </ion-label>
+      <div class="item-note" item-end>
+        <ion-icon name="create" style="zoom:2.0" [routerLink]="['/song/', data.id]"></ion-icon>        
+        <ion-icon name="trash" style="zoom:2.0" (click)="deletePlaces(data.id)"></ion-icon>
+      </div>
+    </ion-item>
+  </ion-list>
+
 </ion-content>
-<ion-footer>
-  <ion-button expand="full" color="primary" (click)="getMyLocation()">Get My Location</ion-button>
-</ion-footer>
+
+

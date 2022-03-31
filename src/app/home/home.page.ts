@@ -1,8 +1,13 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
+import { FormGroup, FormBuilder } from "@angular/forms";
 import { Capacitor, Plugins} from "@capacitor/core";
 import { LocationService } from '../location.service';
 const { Geolocation, Toast} = Plugins;
 
+import { DbService } from './../services/db.service';
+import { ToastController } from '@ionic/angular';
+import { Router } from "@angular/router";
+import { FromEventTarget } from 'rxjs/internal/observable/fromEvent';
 
 @Component({
   selector: 'app-home',
@@ -11,13 +16,102 @@ const { Geolocation, Toast} = Plugins;
 })
 export class HomePage {
 
+  mainForm: FormGroup;
+  Data: any[] = [{id:1, lat:"111", lng:"-111"}];
+
   lat: any;
   lng: any;
   watchId: any;
-  constructor(public ngZone: NgZone, private locationService: LocationService) {
+  constructor(public ngZone: NgZone, 
+    private locationService: LocationService,
+    private db: DbService,
+    public formBuilder: FormBuilder,
+    private toast: ToastController,
+    private router: Router) {
     this.lat = 38.897957;
     this.lng = -77.036560;
   }
+
+
+
+
+  ngOnInit(){
+    this.db.dbState().subscribe(
+      async (res)=>{
+        if(res){
+          this.db.fetchPlaces().subscribe(async item => {
+            this.Data = item;
+            let toast = await this.toast.create({
+              message:'db loaded',
+              duration: 2500
+            });
+            toast.present();
+          })
+        }else{
+          let toast = await this.toast.create({
+            message:'Res is empty',
+            duration: 2500
+          });
+          toast.present();
+        }
+      }
+    );
+    this.mainForm = this.formBuilder.group({
+      lat:[''],
+      lng:['']
+    });
+  }
+
+  storeData(){
+    this.db.dbState().subscribe(async res=>{
+      let toast = await this.toast.create({
+        message:`DB state: ${res}`,
+        duration: 2500
+      });
+      toast.present();
+      if(res){}else{
+        this.db.init().then(res=>{
+
+
+        }).catch(async error=>{
+          let toast = await this.toast.create({
+            message:`error: ${error}`,
+            duration: 2500
+          });
+          toast.present();
+        })
+      }
+    });
+    this.db.addPlace(
+      this.mainForm.value.lat,
+      this.mainForm.value.lng
+    )
+    .then((res)=>{
+      this.mainForm.reset();
+      
+    }).catch(async error => {
+      let toast = await this.toast.create({
+        message: `error: ${error}`,
+        duration: 2500
+      });
+      toast.present();
+    });
+  }
+
+  deletePlace(id){
+    this.db.deletePlace(id).then(async(res)=>{
+      let toast = await this.toast.create({
+        message:'Place deleted',
+        duration: 2500
+      });
+      toast.present();
+    })
+  }
+
+
+
+
+
   
   async getMyLocation() {
     const hasPermission = await this.locationService.checkGPSPermission();

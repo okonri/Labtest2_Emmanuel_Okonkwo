@@ -1,0 +1,29 @@
+
+COMP3097 – WINTER2022
+Max: 15 points
+Rules
+Lab test is published at midnight on Monday, March 28 and you have till Friday, April 1 end of
+the day, to complete the task. It is due at the end of the day.
+It is an INDIVIDUAL work and any attempt to cheat will be treated as academic offence and
+reported according to the school regulations.
+Specification
+You are asked to build an application using Ionic/Angular framework. You can use Capacitor (or
+Cordova). App should satisfy the following requirements:
+• Name your project using following convention Labtest2_YourName
+• The application is a tracking position of the user.
+• It receives the geo location (GPS) from the device (5 points) and stores it in the
+persistent storage using date (string representing a data and time or a timestamp) as a
+key and location as value (5 points).
+• App should do it once per execution (not repeat constantly)
+• App stores data in the local storage on the device (you can choose the type of the
+storage that you prefer)
+• Location (latitude and longitude) should be stored with the timestamp (1 point)
+• User should be able to list locations (2 points)
+• User should be able to remove selected locations from the list (2 points)
+Complete project in a zip file should be submitted before the end of the day on Blackboard.
+(before compressing it, remove the node_module folder to make it smaller)
+Verify the submission (check if the file was actually submitted on BB)
+Useful materials:
+• Black board recordings
+• https://enappd.com/blog/ionic-5-complete-guide-on-geolocation/141/
+• https://medium.com/coder-life/ionic-capacitor-storage-api-e4e7af5e0f0

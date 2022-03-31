@@ -30,6 +30,8 @@
     "@ionic-native/core": "^5.36.0",
     "@ionic-native/geolocation": "^4.20.0",
     "@ionic-native/location-accuracy": "^5.36.0",
+    "@ionic-native/sqlite": "^5.36.0",
+    "@ionic-native/sqlite-porter": "^5.36.0",
     "@ionic/angular": "^6.0.0",
     "@types/googlemaps": "^3.39.8",
     "ajv": "^8.8.2",
